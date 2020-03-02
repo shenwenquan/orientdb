@@ -5444,6 +5444,10 @@ public abstract class OAbstractPaginatedStorage extends OStorageAbstract
                     .warnNoDb(this, "Non tx operation was used during data modification we will need index rebuild.");
                 wereNonTxOperationsPerformedInPreviousOpen = true;
               }
+            } else if (walRecord instanceof OFuzzyCheckpointStartMetadataRecord) {
+              this.lastMetadata = ((OFuzzyCheckpointStartMetadataRecord) walRecord).getMetadata();
+            } else if (walRecord instanceof OFullCheckpointStartMetadataRecord) {
+              this.lastMetadata = ((OFullCheckpointStartMetadataRecord) walRecord).getMetadata();
             } else {
               OLogManager.instance().warnNoDb(this, "Record %s will be skipped during data restore", walRecord);
             }
